@@ -71,9 +71,7 @@ class TechGuideAI:
         :return:
         """
 
-        contents = f"""Considerando a oportunidade de trabalho \"{job_description}\", 
-        faça uma descrição sucinta da área de conhecimento descrita a seguir e depois um passo-a-passo para um
-        cadidato. Inclua nesse plano as referências e hiperlinks citados:\n\n"""
+        contents = "Considerando a oportunidade de trabalho " + job_description + ", faça uma descrição sucinta da área de conhecimento descrita a seguir e depois um passo-a-passo para um candidato. Inclua nesse plano as referências e hyperlinks citados:"
 
         contents += card.generate_content_prompt()
 
@@ -89,10 +87,7 @@ class TechGuideAI:
         :return:
         """
 
-        contents = f"""Considerae a oportunidade de trabalho \"{job_description}\", 
-        faça uma descrição sucinta da área de conhecimento descrita a seguir e depois um passo-a-passo para um
-        candidato.\n\n"""
-
+        contents = "Considere a oportunidade de trabalho \"" + job_description + "\", faça uma descrição sucinta da área de conhecimento descrita a seguir e depois um passo-a-passo para um candidato.\n\n"
         contents += cards.generate_content_prompt()
 
         contents += "\n\nDescreva todos os objetivos que deverão ser atingidos antes de se candidatar."
@@ -109,9 +104,9 @@ class TechGuideAI:
         :return:
         """
 
-        contents = f"""Faça uma breve descrição da seguinte vaga:"""
+        contents = "Faça uma breve descrição da seguinte vaga:"
 
-        contents += f'\n\n"{job_description}"\n\n'
+        contents += '\n\n"' + job_description + '"\n\n'
 
         response = self.model.generate_content(contents=contents)
 
@@ -124,16 +119,16 @@ class TechGuideAI:
         :return:
         """
 
-        contents = f"""A análise dessa vaga indica que o candidato deve ter conhecimento nas seguintes áreas:"""
+        contents = "A análise dessa vaga indica que o candidato deve ter conhecimento nas seguintes áreas:"
         for card in cards.cards:
-            contents += f"\n- {card.name}"
+            contents += "\n- {card.name}"
 
-        contents = f"""\n\nEspera-se que o candidato cumpra os seguintes objetivos:"""
+        contents = """\n\nEspera-se que o candidato cumpra os seguintes objetivos:"""
         for card in cards.cards:
             for key_objective in card.key_objectives:
-                contents += f"\n- {key_objective}"
+                contents += "\n- " + key_objective
 
-        contents += f"""\n\nRescreva essas áreas e objetivos de modo ao candidato poder identificar o que ele precisa alcançar."""
+        contents += """\n\nRescreva essas áreas e objetivos de modo ao candidato poder identificar o que ele precisa alcançar."""
 
         response = self.model.generate_content(contents=contents)
 
@@ -141,14 +136,14 @@ class TechGuideAI:
 
     def rewrite_courses(self, cards):
 
-        contents = f"""A Alura possui um conjunto de ofertas de treinamento podem ajudar os candidatos a atigirem
+        contents = """A Alura possui um conjunto de ofertas de treinamento podem ajudar os candidatos a atigirem
         esses objetivos. A seguir, uma lista de cursos que podem ser úteis para o candidato:"""
         for card in cards.cards:
             for content in card.alura_contents:
                 if content.type == "COURSE":
-                    contents += f"\n- {content.title} - {content.link}"
+                    contents += "\n- " + content.title +" - " + content.link
 
-        contents += f"""\n\nPromova esses treinamentos por meio de um plano de estudos e indique os hiperlinks."""
+        contents += """\n\nPromova esses treinamentos por meio de um plano de estudos e indique os hiperlinks."""
 
         response = self.model.generate_content(contents=contents)
 
